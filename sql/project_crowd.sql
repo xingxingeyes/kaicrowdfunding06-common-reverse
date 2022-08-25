@@ -11,11 +11,47 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 11/07/2022 18:47:27
+ Date: 25/08/2022 17:55:08
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for inner_admin_role
+-- ----------------------------
+DROP TABLE IF EXISTS `inner_admin_role`;
+CREATE TABLE `inner_admin_role`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `admin_id` int NULL DEFAULT NULL,
+  `role_id` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of inner_admin_role
+-- ----------------------------
+INSERT INTO `inner_admin_role` VALUES (1, 14, 1);
+INSERT INTO `inner_admin_role` VALUES (2, 14, 2);
+INSERT INTO `inner_admin_role` VALUES (3, 14, 3);
+INSERT INTO `inner_admin_role` VALUES (34, 6, 5);
+INSERT INTO `inner_admin_role` VALUES (35, 6, 6);
+INSERT INTO `inner_admin_role` VALUES (36, 6, 7);
+
+-- ----------------------------
+-- Table structure for inner_role_auth
+-- ----------------------------
+DROP TABLE IF EXISTS `inner_role_auth`;
+CREATE TABLE `inner_role_auth`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `role_id` int NULL DEFAULT NULL,
+  `auth_id` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of inner_role_auth
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_admin
@@ -30,17 +66,14 @@ CREATE TABLE `t_admin`  (
   `create_time` char(19) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `login_acct`(`login_acct` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 249 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 252 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_admin
 -- ----------------------------
-INSERT INTO `t_admin` VALUES (1, 'tom', '202CB962AC59075B964B07152D234B70', '汤姆', 'tom@qq.com', NULL);
-INSERT INTO `t_admin` VALUES (2, 'loginAcct0', '3E02C30E7B43A0DE4230A54A9DDC1BC5', 'userName0', 'email0', NULL);
 INSERT INTO `t_admin` VALUES (6, 'loginAcct4', '80BD23B1CFAE1CEEDD65833B45260E41', 'userName4', 'email4', NULL);
 INSERT INTO `t_admin` VALUES (7, 'loginAcct5', 'C9B56F71BB980D4EAFAD8F65856E0183', 'userName5', 'email5', NULL);
 INSERT INTO `t_admin` VALUES (8, 'loginAcct6', 'E86FAA1EF0D3C2372B667464AA337FD6', 'userName6', 'email6', NULL);
-INSERT INTO `t_admin` VALUES (9, 'loginAcct7', 'A28AAFBD061882CAC4B3DB4A8143EC7F', 'userName7', 'email7', NULL);
 INSERT INTO `t_admin` VALUES (10, 'loginAcct8', '62F554E1EF2CBB5E28199DF029761EAE', 'userName8', 'email8', NULL);
 INSERT INTO `t_admin` VALUES (11, 'loginAcct9', '12098F4300BC5229085E771F1B73A113', 'userName9', 'email9', NULL);
 INSERT INTO `t_admin` VALUES (12, 'loginAcct10', '71485C6235C94A989CB8480DA8AF0F8C', 'userName10', 'email10', NULL);
@@ -268,6 +301,66 @@ INSERT INTO `t_admin` VALUES (240, 'bob', '202CB962AC59075B964B07152D234B70', '�
 INSERT INTO `t_admin` VALUES (241, 'jerry', '202CB962AC59075B964B07152D234B70', '杰瑞', 'jerry@qq.com', '2022-05-21 22:07:43');
 INSERT INTO `t_admin` VALUES (242, 'jack', '202CB962AC59075B964B07152D234B70', '杰克', 'jack@qq.com', '2022-05-22 10:34:48');
 INSERT INTO `t_admin` VALUES (243, 'andy', '202CB962AC59075B964B07152D234B70', '安迪', 'andy@qq.com', '2022-05-22 10:37:00');
+INSERT INTO `t_admin` VALUES (249, 'tom', '202CB962AC59075B964B07152D234B70', '汤姆', 'tom@qq.com', '2022-08-18 12:32:15');
+
+-- ----------------------------
+-- Table structure for t_auth
+-- ----------------------------
+DROP TABLE IF EXISTS `t_auth`;
+CREATE TABLE `t_auth`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `title` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `category_id` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_auth
+-- ----------------------------
+INSERT INTO `t_auth` VALUES (1, '', '用户模块', NULL);
+INSERT INTO `t_auth` VALUES (2, 'user:delete', '删除', 1);
+INSERT INTO `t_auth` VALUES (3, 'user:get', '查询', 1);
+INSERT INTO `t_auth` VALUES (4, '', '角色模块', NULL);
+INSERT INTO `t_auth` VALUES (5, 'role:delete', '删除', 4);
+INSERT INTO `t_auth` VALUES (6, 'role:get', '查询', 4);
+INSERT INTO `t_auth` VALUES (7, 'role:add', '新增', 4);
+
+-- ----------------------------
+-- Table structure for t_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `t_menu`;
+CREATE TABLE `t_menu`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `pid` int NULL DEFAULT NULL,
+  `name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `icon` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_menu
+-- ----------------------------
+INSERT INTO `t_menu` VALUES (1, NULL, '系统权限菜单', NULL, 'glyphicon glyphicon-th-list');
+INSERT INTO `t_menu` VALUES (2, 1, ' 控 制 面 板 ', 'main.htm', 'glyphicon glyphicon-dashboard');
+INSERT INTO `t_menu` VALUES (3, 1, '权限管理', NULL, 'glyphicon glyphicon glyphicon-tasks');
+INSERT INTO `t_menu` VALUES (4, 3, ' 用 户 维 护 ', 'user/index.htm', 'glyphicon glyphicon-user');
+INSERT INTO `t_menu` VALUES (5, 3, ' 角 色 维 护 ', 'role/index.htm', 'glyphicon glyphicon-king');
+INSERT INTO `t_menu` VALUES (6, 3, ' 菜 单 维 护 ', 'permission/index.htm', 'glyphicon glyphicon-lock');
+INSERT INTO `t_menu` VALUES (7, 1, ' 业 务 审 核 ', NULL, 'glyphicon glyphicon-ok');
+INSERT INTO `t_menu` VALUES (8, 7, ' 实 名 认 证 审 核 ', 'auth_cert/index.htm', 'glyphicon glyphicon-check');
+INSERT INTO `t_menu` VALUES (9, 7, ' 广 告 审 核 ', 'auth_adv/index.htm', 'glyphicon glyphicon-check');
+INSERT INTO `t_menu` VALUES (10, 7, ' 项 目 审 核 ', 'auth_project/index.htm', 'glyphicon glyphicon-check');
+INSERT INTO `t_menu` VALUES (11, 1, ' 业 务 管 理 ', NULL, 'glyphicon glyphicon-th-large');
+INSERT INTO `t_menu` VALUES (12, 11, ' 资 质 维 护 ', 'cert/index.htm', 'glyphicon glyphicon-picture');
+INSERT INTO `t_menu` VALUES (13, 11, ' 分 类 管 理 ', 'certtype/index.htm', 'glyphicon glyphicon-equalizer');
+INSERT INTO `t_menu` VALUES (14, 11, ' 流 程 管 理 ', 'process/index.htm', 'glyphicon glyphicon-random');
+INSERT INTO `t_menu` VALUES (15, 11, ' 广 告 管 理 ', 'advert/index.htm', 'glyphicon glyphicon-hdd');
+INSERT INTO `t_menu` VALUES (16, 11, ' 消 息 模 板 ', 'message/index.htm', 'glyphicon glyphicon-comment');
+INSERT INTO `t_menu` VALUES (17, 11, ' 项 目 分 类 ', 'projectType/index.htm', 'glyphicon glyphicon-list');
+INSERT INTO `t_menu` VALUES (18, 11, ' 项 目 标 签 ', 'tag/index.htm', 'glyphicon glyphicon-tags');
+INSERT INTO `t_menu` VALUES (19, 1, ' 参 数 管 理 ', 'param/index.htm', 'glyphicon glyphicon-list-alt');
 
 -- ----------------------------
 -- Table structure for t_role
@@ -277,7 +370,7 @@ CREATE TABLE `t_role`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 236 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 472 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_role
@@ -297,18 +390,6 @@ INSERT INTO `t_role` VALUES (12, 'role11');
 INSERT INTO `t_role` VALUES (13, 'role12');
 INSERT INTO `t_role` VALUES (14, 'role13');
 INSERT INTO `t_role` VALUES (15, 'role14');
-INSERT INTO `t_role` VALUES (16, 'role15');
-INSERT INTO `t_role` VALUES (17, 'role16');
-INSERT INTO `t_role` VALUES (18, 'role17');
-INSERT INTO `t_role` VALUES (19, 'role18');
-INSERT INTO `t_role` VALUES (20, 'role19');
-INSERT INTO `t_role` VALUES (21, 'role20');
-INSERT INTO `t_role` VALUES (22, 'role21');
-INSERT INTO `t_role` VALUES (23, 'role22');
-INSERT INTO `t_role` VALUES (24, 'role23');
-INSERT INTO `t_role` VALUES (25, 'role24');
-INSERT INTO `t_role` VALUES (26, 'role25');
-INSERT INTO `t_role` VALUES (27, 'role26');
 INSERT INTO `t_role` VALUES (28, 'role27');
 INSERT INTO `t_role` VALUES (29, 'role28');
 INSERT INTO `t_role` VALUES (30, 'role29');
@@ -517,5 +598,241 @@ INSERT INTO `t_role` VALUES (232, 'role231');
 INSERT INTO `t_role` VALUES (233, 'role232');
 INSERT INTO `t_role` VALUES (234, 'role233');
 INSERT INTO `t_role` VALUES (235, 'role234');
+INSERT INTO `t_role` VALUES (236, 'role0');
+INSERT INTO `t_role` VALUES (237, 'role1');
+INSERT INTO `t_role` VALUES (238, 'role2');
+INSERT INTO `t_role` VALUES (239, 'role3');
+INSERT INTO `t_role` VALUES (240, 'role4');
+INSERT INTO `t_role` VALUES (241, 'role5');
+INSERT INTO `t_role` VALUES (242, 'role6');
+INSERT INTO `t_role` VALUES (243, 'role7');
+INSERT INTO `t_role` VALUES (244, 'role8');
+INSERT INTO `t_role` VALUES (245, 'role9');
+INSERT INTO `t_role` VALUES (246, 'role10');
+INSERT INTO `t_role` VALUES (247, 'role11');
+INSERT INTO `t_role` VALUES (248, 'role12');
+INSERT INTO `t_role` VALUES (249, 'role13');
+INSERT INTO `t_role` VALUES (250, 'role14');
+INSERT INTO `t_role` VALUES (251, 'role15');
+INSERT INTO `t_role` VALUES (252, 'role16');
+INSERT INTO `t_role` VALUES (253, 'role17');
+INSERT INTO `t_role` VALUES (254, 'role18');
+INSERT INTO `t_role` VALUES (255, 'role19');
+INSERT INTO `t_role` VALUES (256, 'role20');
+INSERT INTO `t_role` VALUES (257, 'role21');
+INSERT INTO `t_role` VALUES (258, 'role22');
+INSERT INTO `t_role` VALUES (259, 'role23');
+INSERT INTO `t_role` VALUES (260, 'role24');
+INSERT INTO `t_role` VALUES (261, 'role25');
+INSERT INTO `t_role` VALUES (262, 'role26');
+INSERT INTO `t_role` VALUES (263, 'role27');
+INSERT INTO `t_role` VALUES (264, 'role28');
+INSERT INTO `t_role` VALUES (265, 'role29');
+INSERT INTO `t_role` VALUES (266, 'role30');
+INSERT INTO `t_role` VALUES (267, 'role31');
+INSERT INTO `t_role` VALUES (268, 'role32');
+INSERT INTO `t_role` VALUES (269, 'role33');
+INSERT INTO `t_role` VALUES (270, 'role34');
+INSERT INTO `t_role` VALUES (271, 'role35');
+INSERT INTO `t_role` VALUES (272, 'role36');
+INSERT INTO `t_role` VALUES (273, 'role37');
+INSERT INTO `t_role` VALUES (274, 'role38');
+INSERT INTO `t_role` VALUES (275, 'role39');
+INSERT INTO `t_role` VALUES (276, 'role40');
+INSERT INTO `t_role` VALUES (277, 'role41');
+INSERT INTO `t_role` VALUES (278, 'role42');
+INSERT INTO `t_role` VALUES (279, 'role43');
+INSERT INTO `t_role` VALUES (280, 'role44');
+INSERT INTO `t_role` VALUES (281, 'role45');
+INSERT INTO `t_role` VALUES (282, 'role46');
+INSERT INTO `t_role` VALUES (283, 'role47');
+INSERT INTO `t_role` VALUES (284, 'role48');
+INSERT INTO `t_role` VALUES (285, 'role49');
+INSERT INTO `t_role` VALUES (286, 'role50');
+INSERT INTO `t_role` VALUES (287, 'role51');
+INSERT INTO `t_role` VALUES (288, 'role52');
+INSERT INTO `t_role` VALUES (289, 'role53');
+INSERT INTO `t_role` VALUES (290, 'role54');
+INSERT INTO `t_role` VALUES (291, 'role55');
+INSERT INTO `t_role` VALUES (292, 'role56');
+INSERT INTO `t_role` VALUES (293, 'role57');
+INSERT INTO `t_role` VALUES (294, 'role58');
+INSERT INTO `t_role` VALUES (295, 'role59');
+INSERT INTO `t_role` VALUES (296, 'role60');
+INSERT INTO `t_role` VALUES (297, 'role61');
+INSERT INTO `t_role` VALUES (298, 'role62');
+INSERT INTO `t_role` VALUES (299, 'role63');
+INSERT INTO `t_role` VALUES (300, 'role64');
+INSERT INTO `t_role` VALUES (301, 'role65');
+INSERT INTO `t_role` VALUES (302, 'role66');
+INSERT INTO `t_role` VALUES (303, 'role67');
+INSERT INTO `t_role` VALUES (304, 'role68');
+INSERT INTO `t_role` VALUES (305, 'role69');
+INSERT INTO `t_role` VALUES (306, 'role70');
+INSERT INTO `t_role` VALUES (307, 'role71');
+INSERT INTO `t_role` VALUES (308, 'role72');
+INSERT INTO `t_role` VALUES (309, 'role73');
+INSERT INTO `t_role` VALUES (310, 'role74');
+INSERT INTO `t_role` VALUES (311, 'role75');
+INSERT INTO `t_role` VALUES (312, 'role76');
+INSERT INTO `t_role` VALUES (313, 'role77');
+INSERT INTO `t_role` VALUES (314, 'role78');
+INSERT INTO `t_role` VALUES (315, 'role79');
+INSERT INTO `t_role` VALUES (316, 'role80');
+INSERT INTO `t_role` VALUES (317, 'role81');
+INSERT INTO `t_role` VALUES (318, 'role82');
+INSERT INTO `t_role` VALUES (319, 'role83');
+INSERT INTO `t_role` VALUES (320, 'role84');
+INSERT INTO `t_role` VALUES (321, 'role85');
+INSERT INTO `t_role` VALUES (322, 'role86');
+INSERT INTO `t_role` VALUES (323, 'role87');
+INSERT INTO `t_role` VALUES (324, 'role88');
+INSERT INTO `t_role` VALUES (325, 'role89');
+INSERT INTO `t_role` VALUES (326, 'role90');
+INSERT INTO `t_role` VALUES (327, 'role91');
+INSERT INTO `t_role` VALUES (328, 'role92');
+INSERT INTO `t_role` VALUES (329, 'role93');
+INSERT INTO `t_role` VALUES (330, 'role94');
+INSERT INTO `t_role` VALUES (331, 'role95');
+INSERT INTO `t_role` VALUES (332, 'role96');
+INSERT INTO `t_role` VALUES (333, 'role97');
+INSERT INTO `t_role` VALUES (334, 'role98');
+INSERT INTO `t_role` VALUES (335, 'role99');
+INSERT INTO `t_role` VALUES (336, 'role100');
+INSERT INTO `t_role` VALUES (337, 'role101');
+INSERT INTO `t_role` VALUES (338, 'role102');
+INSERT INTO `t_role` VALUES (339, 'role103');
+INSERT INTO `t_role` VALUES (340, 'role104');
+INSERT INTO `t_role` VALUES (341, 'role105');
+INSERT INTO `t_role` VALUES (342, 'role106');
+INSERT INTO `t_role` VALUES (343, 'role107');
+INSERT INTO `t_role` VALUES (344, 'role108');
+INSERT INTO `t_role` VALUES (345, 'role109');
+INSERT INTO `t_role` VALUES (346, 'role110');
+INSERT INTO `t_role` VALUES (347, 'role111');
+INSERT INTO `t_role` VALUES (348, 'role112');
+INSERT INTO `t_role` VALUES (349, 'role113');
+INSERT INTO `t_role` VALUES (350, 'role114');
+INSERT INTO `t_role` VALUES (351, 'role115');
+INSERT INTO `t_role` VALUES (352, 'role116');
+INSERT INTO `t_role` VALUES (353, 'role117');
+INSERT INTO `t_role` VALUES (354, 'role118');
+INSERT INTO `t_role` VALUES (355, 'role119');
+INSERT INTO `t_role` VALUES (356, 'role120');
+INSERT INTO `t_role` VALUES (357, 'role121');
+INSERT INTO `t_role` VALUES (358, 'role122');
+INSERT INTO `t_role` VALUES (359, 'role123');
+INSERT INTO `t_role` VALUES (360, 'role124');
+INSERT INTO `t_role` VALUES (361, 'role125');
+INSERT INTO `t_role` VALUES (362, 'role126');
+INSERT INTO `t_role` VALUES (363, 'role127');
+INSERT INTO `t_role` VALUES (364, 'role128');
+INSERT INTO `t_role` VALUES (365, 'role129');
+INSERT INTO `t_role` VALUES (366, 'role130');
+INSERT INTO `t_role` VALUES (367, 'role131');
+INSERT INTO `t_role` VALUES (368, 'role132');
+INSERT INTO `t_role` VALUES (369, 'role133');
+INSERT INTO `t_role` VALUES (370, 'role134');
+INSERT INTO `t_role` VALUES (371, 'role135');
+INSERT INTO `t_role` VALUES (372, 'role136');
+INSERT INTO `t_role` VALUES (373, 'role137');
+INSERT INTO `t_role` VALUES (374, 'role138');
+INSERT INTO `t_role` VALUES (375, 'role139');
+INSERT INTO `t_role` VALUES (376, 'role140');
+INSERT INTO `t_role` VALUES (377, 'role141');
+INSERT INTO `t_role` VALUES (378, 'role142');
+INSERT INTO `t_role` VALUES (379, 'role143');
+INSERT INTO `t_role` VALUES (380, 'role144');
+INSERT INTO `t_role` VALUES (381, 'role145');
+INSERT INTO `t_role` VALUES (382, 'role146');
+INSERT INTO `t_role` VALUES (383, 'role147');
+INSERT INTO `t_role` VALUES (384, 'role148');
+INSERT INTO `t_role` VALUES (385, 'role149');
+INSERT INTO `t_role` VALUES (386, 'role150');
+INSERT INTO `t_role` VALUES (387, 'role151');
+INSERT INTO `t_role` VALUES (388, 'role152');
+INSERT INTO `t_role` VALUES (389, 'role153');
+INSERT INTO `t_role` VALUES (390, 'role154');
+INSERT INTO `t_role` VALUES (391, 'role155');
+INSERT INTO `t_role` VALUES (392, 'role156');
+INSERT INTO `t_role` VALUES (393, 'role157');
+INSERT INTO `t_role` VALUES (394, 'role158');
+INSERT INTO `t_role` VALUES (395, 'role159');
+INSERT INTO `t_role` VALUES (396, 'role160');
+INSERT INTO `t_role` VALUES (397, 'role161');
+INSERT INTO `t_role` VALUES (398, 'role162');
+INSERT INTO `t_role` VALUES (399, 'role163');
+INSERT INTO `t_role` VALUES (400, 'role164');
+INSERT INTO `t_role` VALUES (401, 'role165');
+INSERT INTO `t_role` VALUES (402, 'role166');
+INSERT INTO `t_role` VALUES (403, 'role167');
+INSERT INTO `t_role` VALUES (404, 'role168');
+INSERT INTO `t_role` VALUES (405, 'role169');
+INSERT INTO `t_role` VALUES (406, 'role170');
+INSERT INTO `t_role` VALUES (407, 'role171');
+INSERT INTO `t_role` VALUES (408, 'role172');
+INSERT INTO `t_role` VALUES (409, 'role173');
+INSERT INTO `t_role` VALUES (410, 'role174');
+INSERT INTO `t_role` VALUES (411, 'role175');
+INSERT INTO `t_role` VALUES (412, 'role176');
+INSERT INTO `t_role` VALUES (413, 'role177');
+INSERT INTO `t_role` VALUES (414, 'role178');
+INSERT INTO `t_role` VALUES (415, 'role179');
+INSERT INTO `t_role` VALUES (416, 'role180');
+INSERT INTO `t_role` VALUES (417, 'role181');
+INSERT INTO `t_role` VALUES (418, 'role182');
+INSERT INTO `t_role` VALUES (419, 'role183');
+INSERT INTO `t_role` VALUES (420, 'role184');
+INSERT INTO `t_role` VALUES (421, 'role185');
+INSERT INTO `t_role` VALUES (422, 'role186');
+INSERT INTO `t_role` VALUES (423, 'role187');
+INSERT INTO `t_role` VALUES (424, 'role188');
+INSERT INTO `t_role` VALUES (425, 'role189');
+INSERT INTO `t_role` VALUES (426, 'role190');
+INSERT INTO `t_role` VALUES (427, 'role191');
+INSERT INTO `t_role` VALUES (428, 'role192');
+INSERT INTO `t_role` VALUES (429, 'role193');
+INSERT INTO `t_role` VALUES (430, 'role194');
+INSERT INTO `t_role` VALUES (431, 'role195');
+INSERT INTO `t_role` VALUES (432, 'role196');
+INSERT INTO `t_role` VALUES (433, 'role197');
+INSERT INTO `t_role` VALUES (434, 'role198');
+INSERT INTO `t_role` VALUES (435, 'role199');
+INSERT INTO `t_role` VALUES (436, 'role200');
+INSERT INTO `t_role` VALUES (437, 'role201');
+INSERT INTO `t_role` VALUES (438, 'role202');
+INSERT INTO `t_role` VALUES (439, 'role203');
+INSERT INTO `t_role` VALUES (440, 'role204');
+INSERT INTO `t_role` VALUES (441, 'role205');
+INSERT INTO `t_role` VALUES (442, 'role206');
+INSERT INTO `t_role` VALUES (443, 'role207');
+INSERT INTO `t_role` VALUES (444, 'role208');
+INSERT INTO `t_role` VALUES (445, 'role209');
+INSERT INTO `t_role` VALUES (446, 'role210');
+INSERT INTO `t_role` VALUES (447, 'role211');
+INSERT INTO `t_role` VALUES (448, 'role212');
+INSERT INTO `t_role` VALUES (449, 'role213');
+INSERT INTO `t_role` VALUES (450, 'role214');
+INSERT INTO `t_role` VALUES (451, 'role215');
+INSERT INTO `t_role` VALUES (452, 'role216');
+INSERT INTO `t_role` VALUES (453, 'role217');
+INSERT INTO `t_role` VALUES (454, 'role218');
+INSERT INTO `t_role` VALUES (455, 'role219');
+INSERT INTO `t_role` VALUES (456, 'role220');
+INSERT INTO `t_role` VALUES (457, 'role221');
+INSERT INTO `t_role` VALUES (458, 'role222');
+INSERT INTO `t_role` VALUES (459, 'role223');
+INSERT INTO `t_role` VALUES (460, 'role224');
+INSERT INTO `t_role` VALUES (461, 'role225');
+INSERT INTO `t_role` VALUES (462, 'role226');
+INSERT INTO `t_role` VALUES (463, 'role227');
+INSERT INTO `t_role` VALUES (464, 'role228');
+INSERT INTO `t_role` VALUES (465, 'role229');
+INSERT INTO `t_role` VALUES (466, 'role230');
+INSERT INTO `t_role` VALUES (467, 'role231');
+INSERT INTO `t_role` VALUES (468, 'role232');
+INSERT INTO `t_role` VALUES (469, 'role233');
+INSERT INTO `t_role` VALUES (470, 'role234');
+INSERT INTO `t_role` VALUES (471, 'AAA');
 
 SET FOREIGN_KEY_CHECKS = 1;
